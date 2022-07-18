@@ -1,0 +1,23 @@
+{
+  "name": "desafio-xp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GBResende/Desafio-XP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GBResende/Desafio-XP/issues"
+  },
+  "homepage": "https://github.com/GBResende/Desafio-XP#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
