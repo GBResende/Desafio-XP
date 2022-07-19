@@ -2,12 +2,14 @@ const usersModel = require('../models/users.model');
 const stocksModel = require('../models/stocks.model');
 const walletModel = require('../models/wallet.model');
 
-const getUserById = async (id) => {
+const getUserById = async (payload) => {
+  const { id } = payload;
   const user = await usersModel.getUserById(id);
   return user;
 };
 
-const postUser = async (username, email, password) => {
+const postUser = async (payload) => {
+  const { username, email, password } = payload;
   const hasUser = await getUserById(username);
   if (hasUser) {
     throw new Error('Usuário já existe');
@@ -15,24 +17,31 @@ const postUser = async (username, email, password) => {
   await usersModel.postUser(username, email, password);
 };
 
-const witdrawUserBalance = async (userId, amount) => {
-  const { balance } = await getUserById(userId);
-  if (balance < amount) {
+const witdrawUserBalance = async (payload) => {
+  const { userId, amount } = payload;
+  const usuario = await usersModel.getUserById(userId);
+  if (usuario.balance < amount) {
     throw new Error('Você não tem saldo suficiente');
   }
   const user = await usersModel.witdrawUserBalance(userId, amount);
   return user;
 };
 
-const depositUserBalance = async (userId, amount) => {
+const depositUserBalance = async (payload) => {
+  const { userId, amount } = payload;
   const user = await usersModel.depositUserBalance(userId, amount);
   return user;
 };
 
-const userBuyStock = async (userId, stockId, quantity) => {
+const userBuyStock = async (payload) => {
+  const { userId, stockId, quantity } = payload;
   const buyOperation = true;
   const userHasStock = await walletModel.getUserStockById(userId, stockId);
   const stock = await stocksModel.getStockById(stockId);
+  const user = await usersModel.getUserById(userId);
+  if (user.balance < (stock.value * quantity).toFixed(2)) {
+    throw new Error('Você não tem saldo suficiente');
+  }
   if (stock.quantity < quantity) {
     throw new Error('Não existem ações suficientes');
   }
