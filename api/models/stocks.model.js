@@ -1,31 +1,31 @@
 const connection = require('../db/connection');
 
-const decreaseStock = (stockId, quantity) => {
-  const [stock] = connection.query(
-    'UPDATE stocks SET quantity = quantity - ? WHERE id = ?',
+const decreaseStock = async (stockId, quantity) => {
+  const [stock] = await connection.query(
+    'UPDATE stocks_xp.stocks SET quantity = quantity - ? WHERE id = ?',
     [quantity, stockId],
   );
   return stock;
 };
 
-const increaseStock = (stockId, quantity) => {
-  const [stock] = connection.query(
-    'UPDATE stocks SET quantity = quantity + ? WHERE id = ?',
+const increaseStock = async (stockId, quantity) => {
+  const [stock] = await connection.query(
+    'UPDATE stocks_xp.stocks SET quantity = quantity + ? WHERE id = ?',
     [quantity, stockId],
   );
   return stock;
 };
 
-const getStockById = (stockId) => {
-  const [stock] = connection.query(
-    'SELECT * FROM stocks WHERE id = ?',
+const getStockById = async (stockId) => {
+  const [[stock]] = await connection.query(
+    'SELECT * FROM stocks_xp.stocks WHERE id = ?',
     [stockId],
   );
   return stock;
 };
 
-const getAllStocks = () => {
-  const [stocks] = connection.query('SELECT * FROM stocks');
+const getAllStocks = async () => {
+  const [stocks] = await connection.query('SELECT * FROM stocks_xp.stocks');
   return stocks;
 };
 
