@@ -18,7 +18,7 @@ services:
     environment:
       MYSQL_USER: root
       MYSQL_PASSWORD: password
-      MYSQL_HOST: db
+      MYSQL_HOST: desafio-xp-db
       JWT_SECRET: secret
 
   db:
