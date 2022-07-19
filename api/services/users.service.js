@@ -56,6 +56,9 @@ const userSellStock = async (userId, stockId, quantity) => {
   await usersModel.userSellStock(userId, stockId, quantity, sellOperation);
   await usersModel.depositUserBalance(userId, (stock.value * quantity).toFixed(2));
   await walletModel.decreaseUserStock(userId, stockId, quantity);
+  if (userHasStock.quantity <= quantity) {
+    await walletModel.deleteUserStock(userId, stockId);
+  }
   await stocksModel.increaseStock(stockId, quantity);
 };
 
