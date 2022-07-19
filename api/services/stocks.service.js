@@ -1,7 +1,8 @@
 const stocksModel = require('../models/stocks.model');
 
-const getStockById = async (stockId) => {
-  const stock = await stocksModel.getStockById(stockId);
+const getStockById = async (payload) => {
+  const { id } = payload;
+  const stock = await stocksModel.getStockById(id);
   return stock;
 };
 
