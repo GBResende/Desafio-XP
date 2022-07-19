@@ -31,6 +31,18 @@ CREATE TABLE stocks_xp.user_ops (
 ALTER TABLE stocks_xp.user_ops ADD FOREIGN KEY (user_id) REFERENCES stocks_xp.users(id);
 ALTER TABLE stocks_xp.user_ops ADD FOREIGN KEY (stock_id) REFERENCES stocks_xp.stocks(id);
 
+CREATE TABLE stocks_xp.wallet (
+    id INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    stock_id INT NOT NULL,
+    quantity INT NOT NULL,
+    PRIMARY KEY (id)
+);
+ALTER TABLE stocks_xp.wallet ADD FOREIGN KEY (user_id) REFERENCES stocks_xp.users(id);
+ALTER TABLE stocks_xp.wallet ADD FOREIGN KEY (stock_id) REFERENCES stocks_xp.stocks(id);
+
+
+
 INSERT INTO stocks_xp.users (username, email, password, balance) 
 VALUES 
 ('gabDev', 'gabresendemkt@gmail.com', 'passaportexp', '4000.00'),
