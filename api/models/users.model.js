@@ -1,7 +1,7 @@
 const connection = require('../db/connection');
 
 const getUserById = async (id) => {
-  const [user] = await connection.query(
+  const [[user]] = await connection.query(
     'SELECT * FROM stocks_xp.users WHERE id = ?',
     [id],
   );
