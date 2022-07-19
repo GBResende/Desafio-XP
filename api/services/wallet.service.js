@@ -6,7 +6,8 @@ const getUserStockById = async (payload) => {
   return userStock;
 };
 
-const getUserWallet = async (userId) => {
+const getUserWallet = async (payload) => {
+  const { userId } = payload;
   const userWallet = await walletModel.getUserWallet(userId);
   return userWallet;
 };

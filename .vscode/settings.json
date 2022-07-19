@@ -2,6 +2,9 @@
     "conventionalCommits.scopes": [
         "config",
         "routers",
-        "database"
+        "database",
+        "model",
+        "service",
+        "controller"
     ]
 }
