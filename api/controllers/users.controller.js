@@ -4,12 +4,12 @@ const userService = require('../services/users.service');
 
 const userRouter = express.Router();
 
-userRouter.get('/user/:id', async (req, res) => {
-  const user = await userService.getUserById(req.query);
+userRouter.get('/:id', async (req, res) => {
+  const user = await userService.getUserById(req.params);
   res.status(200).json(user);
 });
 
-userRouter.post('/user', async (req, res) => {
+userRouter.post('/', async (req, res) => {
   const user = await userService.createUser(req.body);
   res.status(201).json(user);
 });
@@ -33,3 +33,5 @@ userRouter.post('/investimentos/vender', async (req, res) => {
   userService.userSellStock(req.body);
   res.status(201).json('Venda realizada com sucesso!, o valor já consta na sua conta!');
 });
+
+module.exports = userRouter;
