@@ -6,7 +6,7 @@ services:
     container_name: desafio-xp
     tty: true
     stdin_open: true
-    command: bash
+    command: 'npm start'
     restart: always
     working_dir: /app
     volumes:
@@ -17,6 +17,7 @@ services:
       - 3000:3000
     environment:
       MYSQL_USER: root
+      MYSQL_PORT: 3000
       MYSQL_PASSWORD: password
       MYSQL_HOST: desafio-xp-db
       JWT_SECRET: secret
