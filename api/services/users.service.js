@@ -1,3 +1,4 @@
+const { errorObj } = require('../middlewares/error.middleware');
 const usersModel = require('../models/users.model');
 const stocksModel = require('../models/stocks.model');
 const walletModel = require('../models/wallet.model');
@@ -12,7 +13,7 @@ const postUser = async (payload) => {
   const { username, email, password } = payload;
   const hasUser = await getUserById(username);
   if (hasUser) {
-    throw new Error('Usuário já existe');
+    throw errorObj(400, 'Usuário já existe');
   }
   await usersModel.postUser(username, email, password);
 };
@@ -21,7 +22,7 @@ const witdrawUserBalance = async (payload) => {
   const { userId, amount } = payload;
   const usuario = await usersModel.getUserById(userId);
   if (usuario.balance < amount) {
-    throw new Error('Você não tem saldo suficiente');
+    throw errorObj(400, 'Você não tem saldo suficiente');
   }
   const user = await usersModel.witdrawUserBalance(userId, amount);
   return user;
@@ -37,13 +38,16 @@ const userBuyStock = async (payload) => {
   const { userId, stockId, quantity } = payload;
   const buyOperation = true;
   const userHasStock = await walletModel.getUserStockById(userId, stockId);
-  const stock = await stocksModel.getStockById(stockId);
   const user = await usersModel.getUserById(userId);
-  if (user.balance < (stock.value * quantity).toFixed(2)) {
-    throw new Error('Você não tem saldo suficiente');
+  if (!user) {
+    throw errorObj(400, 'Usuário não encontrado');
+  }
+  const stock = await stocksModel.getStockById(stockId);
+  if (user.balance < (stock.value * quantity)) {
+    throw errorObj(400, 'Você não tem saldo suficiente');
   }
   if (stock.quantity < quantity) {
-    throw new Error('Não existem ações suficientes');
+    throw errorObj(400, 'Não existem ações suficientes');
   }
   if (!userHasStock) {
     await walletModel.createUserStock(userId, stockId, quantity);
@@ -51,16 +55,24 @@ const userBuyStock = async (payload) => {
     await walletModel.increaseUserStock(userId, stockId, quantity);
   }
   await usersModel.userBuyStock(userId, stockId, quantity, buyOperation);
-  await usersModel.witdrawUserBalance(userId, (stock.value * quantity).toFixed(2));
+  await usersModel.witdrawUserBalance(userId, (stock.value * quantity));
   await stocksModel.decreaseStock(stockId, quantity);
 };
 
-const userSellStock = async (userId, stockId, quantity) => {
+const userSellStock = async (payload) => {
+  const { userId, stockId, quantity } = payload;
   const sellOperation = false;
   const userHasStock = await walletModel.getUserStockById(userId, stockId);
   const stock = await stocksModel.getStockById(stockId);
-  if (userHasStock.quantity < quantity) {
-    throw new Error('Não existem ações suficientes');
+  const user = await usersModel.getUserById(userId);
+  if (!user) {
+    throw errorObj(400, 'Usuário não encontrado');
+  }
+  if (!userHasStock) {
+    throw errorObj(400, 'Você não possui essa ação');
+  }
+  if (quantity > userHasStock.quantity) {
+    throw errorObj(400, 'Você só pode vender quantidade menor ou igual a sua');
   }
   await usersModel.userSellStock(userId, stockId, quantity, sellOperation);
   await usersModel.depositUserBalance(userId, (stock.value * quantity).toFixed(2));
