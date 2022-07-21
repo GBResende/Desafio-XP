@@ -8,9 +8,17 @@ const getUserById = async (id) => {
   return user;
 };
 
+const getUserByCredentials = async (email, password) => {
+  const [[user]] = await connection.query(
+    'SELECT id, username, email, balance FROM stocks_xp.users WHERE email = ? AND password = ? ',
+    [email, password],
+  );
+  return user;
+};
+
 const postUser = async (username, email, password) => {
   const [newUser] = await connection.query(
-    'INSERT INTO stocks_xp.users (username, email, password, balance) VALUES (?, ?, ?)',
+    'INSERT INTO stocks_xp.users (username, email, password, balance) VALUES (?, ?, ?, ?)',
     [username, email, password, 0],
   );
   return newUser;
@@ -55,4 +63,5 @@ module.exports = {
   postUser,
   witdrawUserBalance,
   depositUserBalance,
+  getUserByCredentials,
 };
