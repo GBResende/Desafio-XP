@@ -1,36 +1,38 @@
 const express = require('express');
+const { validateRequest } = require('../middlewares/request.middleware');
+const { validateUser, validateBankTransition, validateStockTransition } = require('../middlewares/user.middleware');
 
 const userService = require('../services/users.service');
 
 const userRouter = express.Router();
 
-userRouter.get('/:id', async (req, res) => {
+userRouter.get('/:id', validateRequest, async (req, res) => {
   const user = await userService.getUserById(req.params);
   res.status(200).json(user);
 });
 
-userRouter.post('/', async (req, res) => {
-  const user = await userService.createUser(req.body);
+userRouter.post('/', validateUser, async (req, res) => {
+  const user = await userService.postUser(req.body);
   res.status(201).json(user);
 });
 
-userRouter.put('/conta/saque', async (req, res) => {
-  const user = await userService.witdrawUserBalance(req.body);
-  res.status(200).json(user);
+userRouter.post('/conta/saque', validateBankTransition, validateRequest, async (req, res) => {
+  await userService.witdrawUserBalance(req.body);
+  res.status(200).json('Saque realizado com sucesso!');
 });
 
-userRouter.put('/conta/deposito', async (req, res) => {
-  const user = await userService.depositUserBalance(req.body);
-  res.status(200).json(user);
+userRouter.post('/conta/deposito', validateBankTransition, validateRequest, async (req, res) => {
+  await userService.depositUserBalance(req.body);
+  res.status(200).json('Depósito realizado com sucesso!');
 });
 
-userRouter.post('/investimentos/comprar', async (req, res) => {
-  userService.userBuyStock(req.body);
+userRouter.post('/investimentos/comprar', validateStockTransition, validateRequest, async (req, res) => {
+  await userService.userBuyStock(req.body);
   res.status(201).json('Compra realizada com sucesso!');
 });
 
-userRouter.post('/investimentos/vender', async (req, res) => {
-  userService.userSellStock(req.body);
+userRouter.post('/investimentos/vender', validateStockTransition, validateRequest, async (req, res) => {
+  await userService.userSellStock(req.body);
   res.status(201).json('Venda realizada com sucesso!, o valor já consta na sua conta!');
 });
 
