@@ -1,7 +1,7 @@
 const connection = require('../db/connection');
 
 const getUserStockById = async (userId, stockId) => {
-  const [stock] = await connection.query(
+  const [[stock]] = await connection.query(
     `SELECT w.*,
     s.value
     FROM stocks_xp.wallet as w
@@ -10,16 +10,13 @@ const getUserStockById = async (userId, stockId) => {
     WHERE w.user_id = ? AND w.stock_id = ? `,
     [userId, stockId],
   );
-  if (stock.length === 0) {
-    return null;
-  }
   return stock;
 };
 
 const getUserWallet = async (userId) => {
   const [wallet] = await connection.query(
-    `SELECT stocks_xp.wallet.*,
-    stocks_xp.stocks.value
+    `SELECT w.*,
+    s.value
     FROM stocks_xp.wallet w
     INNER JOIN stocks_xp.stocks s
     ON w.stock_id = s.id
