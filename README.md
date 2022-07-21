@@ -29,9 +29,9 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [x] Dockerizar a aplicação
 - [x] Criar os endpoints
 - [x] Aplicar regras de negócio
-- [ ] Implementar middlewares de validações
-- [ ] Criar autenticação e autorização JWT
-- [ ] Alimentar o banco de dados com dados de investimento
+- [x] Implementar middlewares de validações
+- [x] Criar autenticação e autorização JWT
+- [x] Alimentar o banco de dados com dados de investimento
 - [ ] Implementar API SWAGGER
 - [ ] Testar a aplicação
 - [ ] Realizar o deploy da aplicação
