@@ -1,10 +1,11 @@
 const express = require('express');
+const { validateRequest } = require('../middlewares/request.middleware');
 
 const stockService = require('../services/stocks.service');
 
 const stocksRouter = express.Router();
 
-stocksRouter.get('/ativos/:id', async (req, res) => {
+stocksRouter.get('/ativos/:id', validateRequest, async (req, res) => {
   const orderStock = await stockService.getStockById(req.params);
   res.status(200).json(orderStock);
 });
