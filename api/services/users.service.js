@@ -45,8 +45,7 @@ const witdrawUserBalance = async (payload) => {
 
 const depositUserBalance = async (payload) => {
   const { userId, amount } = payload;
-  const user = await usersModel.depositUserBalance(userId, amount);
-  return user;
+  await usersModel.depositUserBalance(userId, amount);
 };
 
 const userBuyStock = async (payload) => {
@@ -55,7 +54,7 @@ const userBuyStock = async (payload) => {
   const userHasStock = await walletModel.getUserStockById(userId, stockId);
   const user = await usersModel.getUserById(userId);
   if (!user) {
-    throw errorObj(400, 'Usuário não encontrado');
+    throw errorObj(404, 'Usuário não encontrado');
   }
   const stock = await stocksModel.getStockById(stockId);
   if (user.balance < (stock.value * quantity)) {
@@ -81,7 +80,7 @@ const userSellStock = async (payload) => {
   const stock = await stocksModel.getStockById(stockId);
   const user = await usersModel.getUserById(userId);
   if (!user) {
-    throw errorObj(400, 'Usuário não encontrado');
+    throw errorObj(404, 'Usuário não encontrado');
   }
   if (!userHasStock) {
     throw errorObj(400, 'Você não possui essa ação');
@@ -105,4 +104,5 @@ module.exports = {
   depositUserBalance,
   userBuyStock,
   userSellStock,
+  getUserAccount,
 };
