@@ -87,3 +87,28 @@ describe('Testa a camada model', () => {
       expect(connection.execute.calledOnce).to.be.true;
     });
   });
+  describe('testa o método userBuyStock', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves();
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('o método connection.execute deve ser chamado 1 vez', async () => {
+      await usersModel.userBuyStock(1, 1, 100, true);
+      expect(connection.execute.calledOnce).to.be.true;
+    });
+  });
+  describe('testa o método userSellStock', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves();
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('o método connection.execute deve ser chamado 1 vez', async () => {
+      await usersModel.userSellStock(1, 1, 100, false);
+      expect(connection.execute.calledOnce).to.be.true;
+    });
+  });
+});
