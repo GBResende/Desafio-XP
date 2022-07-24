@@ -6,7 +6,16 @@ const walletModel = require('../models/wallet.model');
 const getUserById = async (payload) => {
   const { id } = payload;
   const user = await usersModel.getUserById(id);
-  return user;
+  if (!user) {
+    throw errorObj(404, 'Usuário não encontrado');
+  }
+  const userInfos = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+  };
+  return userInfos;
+};
 };
 
 const postUser = async (payload) => {
