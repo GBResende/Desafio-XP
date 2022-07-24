@@ -2,18 +2,18 @@ on: [push, pull_request]
 
 jobs: 
   eslint:
-  runs-on: ubuntu-latest
-  steps: 
-    - uses: actions/checkout@v2
-      name: verifica o repositório remoto
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+        name: verifica o repositório remoto
 
-    - name: iinstala o node com a versão 16
-      uses: actions/setup-node@v2
-      with: 
-        node-version: 16
+      - name: iinstala o node com a versão 16
+        uses: actions/setup-node@v2
+        with: 
+          node-version: 16
 
-    - name: instalando as dependências
-      run: npm install
+      - name: instalando as dependências
+        run: npm install
 
-    - name: executando o eslint
-      run: npx eslint .
+      - name: executando o eslint
+        run: npx eslint .
