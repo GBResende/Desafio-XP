@@ -3,7 +3,7 @@ module.exports = {
   info: {
     description: 'Essa é uma aplicação que simula transações de compra e venda de ações',
     version: '1.0.0',
-    server: [
+    servers: [
       {
         url: 'http://localhost:3000/docs',
         description: 'API TESTE',
