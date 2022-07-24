@@ -74,3 +74,32 @@ describe('testa a camada de users Service', () => {
       }
     });
   });
+  describe('testa a função postUser', () => {
+    beforeEach(async () => {
+      sinon.stub(usersModel, 'postUser').resolves();
+    });
+    afterEach(async () => {
+      usersModel.postUser.restore();
+    });
+    it('A função getUserAccount da camada de model deve ser chamada 1 vez', async () => {
+      await userService.postUser({
+        name: 'teste', email: 'teste@teste.com', password: '12345678'
+      });
+      expect(usersModel.postUser.calledOnce).to.be.true
+    });
+  });
+  describe('testa a função whitdrawUserBalance', () => {
+    beforeEach(async () => {
+      sinon.stub(usersModel, 'getUserById').resolves(usersMock.allInfoUser[0][0]);
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+    });
+    afterEach(async () => {
+      usersModel.getUserById.restore();
+      usersModel.witdrawUserBalance.restore();
+    });
+    it('As funções getUserById e witdrawUserBalance da camada users Model devem ser chamada 1 vez', async () => {
+      await userService.witdrawUserBalance({ id: 1 });
+      expect(usersModel.getUserById.calledOnce).to.be.true
+      expect(usersModel.witdrawUserBalance.calledOnce).to.be.true
+    });
+  });
