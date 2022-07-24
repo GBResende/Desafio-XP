@@ -4,8 +4,8 @@ const getUserStockById = async (userId, stockId) => {
   const [[stock]] = await connection.query(
     `SELECT w.*,
     s.value
-    FROM stocks_xp.wallet as w
-    INNER JOIN stocks_xp.stocks as s
+    FROM wallet as w
+    INNER JOIN stocks as s
     ON w.stock_id = s.id
     WHERE w.user_id = ? AND w.stock_id = ? `,
     [userId, stockId],
@@ -17,8 +17,8 @@ const getUserWallet = async (userId) => {
   const [wallet] = await connection.query(
     `SELECT w.*,
     s.value
-    FROM stocks_xp.wallet w
-    INNER JOIN stocks_xp.stocks s
+    FROM wallet w
+    INNER JOIN stocks s
     ON w.stock_id = s.id
     WHERE w.user_id = ?`,
     [userId],
@@ -28,7 +28,7 @@ const getUserWallet = async (userId) => {
 
 const createUserStock = async (userId, stockId, quantity) => {
   const [stock] = await connection.query(
-    'INSERT INTO stocks_xp.wallet (user_id, stock_id, quantity) VALUES (?, ?, ?)',
+    'INSERT INTO wallet (user_id, stock_id, quantity) VALUES (?, ?, ?)',
     [userId, stockId, quantity],
   );
   return stock;
@@ -36,7 +36,7 @@ const createUserStock = async (userId, stockId, quantity) => {
 
 const increaseUserStock = async (userId, stockId, quantity) => {
   const [stock] = await connection.query(
-    'UPDATE stocks_xp.wallet SET quantity = quantity + ? WHERE user_id = ? AND stock_id = ?',
+    'UPDATE wallet SET quantity = quantity + ? WHERE user_id = ? AND stock_id = ?',
     [quantity, userId, stockId],
   );
   return stock;
@@ -44,7 +44,7 @@ const increaseUserStock = async (userId, stockId, quantity) => {
 
 const decreaseUserStock = async (userId, stockId, quantity) => {
   const [stock] = await connection.query(
-    'UPDATE stocks_xp.wallet SET quantity = quantity - ? WHERE user_id = ? AND stock_id = ?',
+    'UPDATE wallet SET quantity = quantity - ? WHERE user_id = ? AND stock_id = ?',
     [quantity, userId, stockId],
   );
   return stock;
@@ -52,7 +52,7 @@ const decreaseUserStock = async (userId, stockId, quantity) => {
 
 const deleteUserStock = async (userId, stockId) => {
   const [stock] = await connection.query(
-    'DELETE FROM stocks_xp.wallet WHERE user_id = ? AND stock_id = ?',
+    'DELETE FROM wallet WHERE user_id = ? AND stock_id = ?',
     [userId, stockId],
   );
   return stock;
