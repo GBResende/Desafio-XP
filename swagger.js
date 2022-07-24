@@ -3,7 +3,10 @@ module.exports = {
   info: {
     description: 'Essa é uma aplicação que simula transações de compra e venda de ações',
     version: '1.0.0',
-    server: [{ url: 'http://localhost:3000/docs' }, { url: 'https://passaportexp.herokuapp.com/docs' }],
+    server: [
+      { url: 'http://localhost:3000/docs' },
+      { url: 'https://passaportexp.herokuapp.com/docs' },
+    ],
     title: 'Desafio XP',
     contact: {
       email: 'gabresendemkt@gmail.com',
