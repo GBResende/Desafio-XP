@@ -25,3 +25,16 @@ describe('Testa a camada model', () => {
       expect(user).to.be.equal(usersMock.allInfoUser);
     });
   });
+  describe('Testa o método getUserAccount', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves([[usersMock.userAccount]]);
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('Deve retornar a conta do usuário', async () => {
+      const userAccount = await usersModel.getUserAccount(2);
+      expect(connection.execute.calledOnce).to.be.true;
+      expect(userAccount).to.be.equal(usersMock.userAccount);
+    });
+  });
