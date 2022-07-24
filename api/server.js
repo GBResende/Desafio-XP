@@ -14,10 +14,10 @@ app.use('/stocks', require('./routers/stocks'));
 app.use('/wallet', require('./routers/wallet'));
 app.use('/login', require('./routers/login'));
 
-app.use('/docs', swagger.serve, swagger.setup(require('../swagger.json')));
+app.use('/docs', swagger.serve, swagger.setup(require('../swagger')));
 
 app.use(errorMiddleware);
 
-app.listen(process.env.MYSQL_PORT, () => {
-  console.log(`Server is running on port ${process.env.MYSQL_PORT}`);
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
