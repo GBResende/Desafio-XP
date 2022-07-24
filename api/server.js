@@ -18,6 +18,7 @@ app.use('/docs', swagger.serve, swagger.setup(require('../swagger')));
 
 app.use(errorMiddleware);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(process.env.MYSQL_DATABASE);
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
 });
