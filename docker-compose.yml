@@ -20,6 +20,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: password
       MYSQL_HOST: desafio-xp-db
+      MYSQL_DATABASE: stocks_xp
       JWT_SECRET: secret
 
   db:
