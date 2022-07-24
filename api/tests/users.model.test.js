@@ -38,3 +38,16 @@ describe('Testa a camada model', () => {
       expect(userAccount).to.be.equal(usersMock.userAccount);
     });
   });
+  describe('testa o método getUserByCredentials', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves([[usersMock.userByCredentials]]);
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('Deve retornar as credenciais do usuário', async () => {
+      const userCredentials = await usersModel.getUserByCredentials('teste@teste.com', '12345678');
+      expect(connection.execute.calledOnce).to.be.true;
+      expect(userCredentials).to.be.equal(usersMock.userByCredentials);
+    });
+  });
