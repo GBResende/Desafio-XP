@@ -16,6 +16,7 @@ const getUserById = async (payload) => {
   };
   return userInfos;
 };
+
 const getUserAccount = async (payload) => {
   const { id } = payload;
   const userAccount = await usersModel.getUserAccount(id);
@@ -26,12 +27,8 @@ const getUserAccount = async (payload) => {
 };
 
 const postUser = async (payload) => {
-  const { username, email, password } = payload;
-  const hasUser = await getUserById(username);
-  if (hasUser) {
-    throw errorObj(400, 'Usuário já existe');
-  }
-  await usersModel.postUser(username, email, password);
+  const { name, email, password } = payload;
+  await usersModel.postUser(name, email, password);
 };
 
 const witdrawUserBalance = async (payload) => {
