@@ -5,6 +5,14 @@
         "database",
         "model",
         "service",
-        "controller"
+        "controller",
+        "readme",
+        "auth",
+        "checkFunctions",
+        "middlewares",
+        "swagger",
+        "tests",
+        "docker",
+        "deploy"
     ]
 }
