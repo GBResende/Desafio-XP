@@ -12,12 +12,12 @@ module.exports = {
   },
   servers: [
     {
-      url: `http://localhost:${process.env.PORT}`,
-      description: 'API TESTE',
-    },
-    {
       url: 'https://passaportexp.herokuapp.com',
       description: 'API PRODUÇÃO',
+    },
+    {
+      url: `http://localhost:${process.env.PORT}`,
+      description: 'API TESTE',
     },
   ],
   paths: {

@@ -62,6 +62,7 @@ Esta API tem como objetivo simular transações de compra e venda de ações, su
 - Para validação e autenticação das requisições eu utilizei a criptografia JWT.
 - Para criação das rotas eu utilizei o framework Express e para recuperar erros no middleware de erros fiz a utilização da biblioteca do Express-async-errors
 - Para documentar o funcionamento da API eu fiz a utilização do SWAGGER, que facilita a utilização e reaproveitamento das rotas no Front End.
+- Realizei a configuração do CI para controle de lint do pull e push request no repositório.
 
 
 ### Ajustes e melhorias
