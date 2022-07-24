@@ -143,3 +143,169 @@ describe('testa a camada de users Service', () => {
       expect(usersModel.depositUserBalance.calledOnce).to.be.true
     });
   });
+  describe('testa a função userBuyStock', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'createUserStock').resolves();
+      sinon.stub(walletModel, 'increaseUserStock').resolves();
+      sinon.stub(usersModel, 'userBuyStock').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      sinon.stub(stocksModel, 'decreaseStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.createUserStock.restore();
+      walletModel.increaseUserStock.restore();
+      usersModel.userBuyStock.restore();
+      usersModel.witdrawUserBalance.restore();
+      stocksModel.decreaseStock.restore();
+    });
+    it('Todas as funções devem ser chamadas sem lançamento de erros e não deve criar uma nova ação na carteira do usuário', async () => {
+      await userService.userBuyStock({userId: 1, stockId: 10, quantity: 10});
+      expect(walletModel.getUserStockById.calledOnce).to.be.true
+      expect(usersModel.getUserById.calledOnce).to.be.true
+      expect(stocksModel.getStockById.calledOnce).to.be.true
+      expect(walletModel.increaseUserStock.calledOnce).to.be.true
+      expect(walletModel.createUserStock.calledOnce).to.be.false
+      expect(usersModel.userBuyStock.calledOnce).to.be.true
+      expect(usersModel.witdrawUserBalance.calledOnce).to.be.true
+      expect(stocksModel.decreaseStock.calledOnce).to.be.true
+    });
+  });
+  describe('testa a função userBuyStock', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves();
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'createUserStock').resolves();
+      sinon.stub(walletModel, 'increaseUserStock').resolves();
+      sinon.stub(usersModel, 'userBuyStock').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      sinon.stub(stocksModel, 'decreaseStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.createUserStock.restore();
+      walletModel.increaseUserStock.restore();
+      usersModel.userBuyStock.restore();
+      usersModel.witdrawUserBalance.restore();
+      stocksModel.decreaseStock.restore();
+    });
+    it('cria uma nova ação na carteira do usuário', async () => {
+      await userService.userBuyStock({userId: 1, stockId: 52, quantity: 10});
+      expect(walletModel.createUserStock.calledOnce).to.be.true
+    });
+  });
+  describe('testa o retorno de erro userBuyStock', () => {
+    it('Deve retornar um erro 404 com a mensagem "usuário não encontrado"', async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves();
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'createUserStock').resolves();
+      sinon.stub(walletModel, 'increaseUserStock').resolves();
+      sinon.stub(usersModel, 'userBuyStock').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      sinon.stub(stocksModel, 'decreaseStock').resolves();
+      try {
+        await userService.userBuyStock({ id: 1 });
+      }
+      catch (err) {
+        
+        expect(err.status).to.be.equal(404);
+        expect(err.message).to.be.equal('Usuário não encontrado');
+      }
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.createUserStock.restore();
+      walletModel.increaseUserStock.restore();
+      usersModel.userBuyStock.restore();
+      usersModel.witdrawUserBalance.restore();
+      stocksModel.decreaseStock.restore();
+    });
+    it('Deve retornar um erro 400 com a mensagem "Você não tem saldo suficiente"', async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 0,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'createUserStock').resolves();
+      sinon.stub(walletModel, 'increaseUserStock').resolves();
+      sinon.stub(usersModel, 'userBuyStock').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      sinon.stub(stocksModel, 'decreaseStock').resolves();
+      try {
+        await userService.userBuyStock({userId: 1, stockId: 2, quantity: 100});
+      }
+      catch (err) {
+        expect(err.status).to.be.equal(400);
+        expect(err.message).to.be.equal('Você não tem saldo suficiente');
+      }
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.createUserStock.restore();
+      walletModel.increaseUserStock.restore();
+      usersModel.userBuyStock.restore();
+      usersModel.witdrawUserBalance.restore();
+      stocksModel.decreaseStock.restore();
+    });
+    it('Deve retornar um erro 400 com a mensagem "Não existem ações suficientes"', async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'createUserStock').resolves();
+      sinon.stub(walletModel, 'increaseUserStock').resolves();
+      sinon.stub(usersModel, 'userBuyStock').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      sinon.stub(stocksModel, 'decreaseStock').resolves();
+      try {
+        await userService.userBuyStock({userId: 1, stockId: 1, quantity: 15});
+
+      }
+      catch (err) {
+        expect(err.status).to.be.equal(400);
+        expect(err.message).to.be.equal('Não existem ações suficientes');
+      }
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.createUserStock.restore();
+      walletModel.increaseUserStock.restore();
+      usersModel.userBuyStock.restore();
+      usersModel.witdrawUserBalance.restore();
+      stocksModel.decreaseStock.restore();
+    });
+  });
