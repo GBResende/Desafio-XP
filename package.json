@@ -4,8 +4,9 @@
   "description": "",
   "main": "./api/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm install && node ./api/server.js",
+    "test:mocha": "mocha ./api/tests/*.js --exit",
+    "test:coverage": "nyc npm run test:mocha -- --coverage",
+    "start": "node ./api/server.js",
     "dev": "nodemon ./api/server.js"
   },
   "repository": {
