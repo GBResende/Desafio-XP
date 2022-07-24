@@ -16,6 +16,13 @@ const getUserById = async (payload) => {
   };
   return userInfos;
 };
+const getUserAccount = async (payload) => {
+  const { id } = payload;
+  const userAccount = await usersModel.getUserAccount(id);
+  if (!userAccount) {
+    throw errorObj(404, 'Usuário não encontrado');
+  }
+  return userAccount;
 };
 
 const postUser = async (payload) => {
