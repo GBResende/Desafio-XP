@@ -7,12 +7,12 @@ const validateEmailRegex = (email) => {
 
 const checkPostUser = (payload) => ([
   {
-    check: !payload.username,
+    check: !payload.name,
     result: () => { throw errorObj(400, 'Nome é obrigatório'); },
   },
   {
-    check: payload.username.length <= 3,
-    result: () => { throw errorObj(400, 'Username deve ter no mínimo 3 caracteres'); },
+    check: payload.name.length <= 3,
+    result: () => { throw errorObj(400, 'name deve ter no mínimo 3 caracteres'); },
   },
   {
     check: !payload.email,
