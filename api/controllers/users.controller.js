@@ -11,9 +11,14 @@ userRouter.get('/:id', validateRequest, async (req, res) => {
   res.status(200).json(user);
 });
 
+userRouter.get('/conta/:id', validateRequest, async (req, res) => {
+  const user = await userService.getUserAccount(req.params);
+  res.status(200).json(user);
+});
+
 userRouter.post('/', validateUser, async (req, res) => {
-  const user = await userService.postUser(req.body);
-  res.status(201).json(user);
+  await userService.postUser(req.body);
+  res.status(201).json('Usuário criado com sucesso');
 });
 
 userRouter.post('/conta/saque', validateBankTransition, validateRequest, async (req, res) => {
@@ -21,7 +26,7 @@ userRouter.post('/conta/saque', validateBankTransition, validateRequest, async (
   res.status(200).json('Saque realizado com sucesso!');
 });
 
-userRouter.post('/conta/deposito', validateBankTransition, validateRequest, async (req, res) => {
+userRouter.post('/conta/deposito', validateBankTransition, async (req, res) => {
   await userService.depositUserBalance(req.body);
   res.status(200).json('Depósito realizado com sucesso!');
 });
