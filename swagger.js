@@ -4,8 +4,14 @@ module.exports = {
     description: 'Essa é uma aplicação que simula transações de compra e venda de ações',
     version: '1.0.0',
     server: [
-      { url: 'http://localhost:3000/docs' },
-      { url: 'https://passaportexp.herokuapp.com/docs' },
+      {
+        url: 'http://localhost:3000/docs',
+        description: 'API TESTE',
+      },
+      {
+        url: 'https://passaportexp.herokuapp.com/docs',
+        description: 'API PRODUÇÃO',
+      },
     ],
     title: 'Desafio XP',
     contact: {
@@ -13,6 +19,68 @@ module.exports = {
     },
   },
   paths: {
+    '/login': {
+      post: {
+        tags: ['login'],
+        summary: 'Login de usuário',
+        description: 'Login de usuário',
+        consumes: [
+          'application/json',
+        ],
+        produces: [
+          'application/json',
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                $ref: '#/definitions/userLogin',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  example: {
+                    token: 'token',
+                  },
+                },
+              },
+            },
+          },
+          500: {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  $ref: '#/definitions/DefaultMessageError',
+                },
+              },
+            },
+          },
+          400: {
+            description: 'Bad Request',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  example: {
+                    message: 'Usuário ou senha inválidos',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     '/users/{id}': {
       get: {
         tags: [
@@ -463,68 +531,6 @@ module.exports = {
                   type: 'object',
                   example: {
                     message: 'Nome é obrigatório e deve ter mais de 3 caracteres',
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-    '/login': {
-      post: {
-        tags: ['login'],
-        summary: 'Login de usuário',
-        description: 'Login de usuário',
-        consumes: [
-          'application/json',
-        ],
-        produces: [
-          'application/json',
-        ],
-        requestBody: {
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                $ref: '#/definitions/userLogin',
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: 'OK',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  example: {
-                    token: 'token',
-                  },
-                },
-              },
-            },
-          },
-          500: {
-            description: 'Internal Server Error',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  $ref: '#/definitions/DefaultMessageError',
-                },
-              },
-            },
-          },
-          400: {
-            description: 'Bad Request',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  example: {
-                    message: 'Usuário ou senha inválidos',
                   },
                 },
               },
