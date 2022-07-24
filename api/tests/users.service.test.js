@@ -103,3 +103,43 @@ describe('testa a camada de users Service', () => {
       expect(usersModel.witdrawUserBalance.calledOnce).to.be.true
     });
   });
+  describe('testa o retorno de erro witdrawUserBalance', () => {
+    it('Deve retornar um erro 404 com a mensagem "usuário não encontrado"', async () => {
+      sinon.stub(usersModel, 'getUserById').resolves();
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      try {
+        await userService.witdrawUserBalance({ id: 1 });
+      }
+      catch (err) {
+        expect(err.status).to.be.equal(404);
+        expect(err.message).to.be.equal('Usuário não encontrado');
+      }
+      usersModel.getUserById.restore();
+      usersModel.witdrawUserBalance.restore();
+    });
+    it('Deve retornar um erro 400 com a mensagem "Você não tem saldo suficiente"', async () => {
+      sinon.stub(usersModel, 'getUserById').resolves(usersMock.allInfoUser[0][0]);
+      sinon.stub(usersModel, 'witdrawUserBalance').resolves();
+      try {
+        await userService.witdrawUserBalance({userId: 1, amount: 100});
+      }
+      catch (err) {
+        expect(err.status).to.be.equal(400);
+        expect(err.message).to.be.equal('Você não tem saldo suficiente');
+      }
+      usersModel.getUserById.restore();
+      usersModel.witdrawUserBalance.restore();
+    });
+  });
+  describe('testa a função depositUserBalance', () => {
+    beforeEach(async () => {
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+    });
+    afterEach(async () => {
+      usersModel.depositUserBalance.restore();
+    });
+    it('A função depositUserBalance da camada users Model deve ser chamada 1 vez', async () => {
+      await userService.depositUserBalance({userId: 1, amount: 100});
+      expect(usersModel.depositUserBalance.calledOnce).to.be.true
+    });
+  });
