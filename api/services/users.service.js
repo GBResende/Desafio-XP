@@ -34,11 +34,13 @@ const postUser = async (payload) => {
 const witdrawUserBalance = async (payload) => {
   const { userId, amount } = payload;
   const usuario = await usersModel.getUserById(userId);
+  if (!usuario) {
+    throw errorObj(404, 'Usuário não encontrado');
+  }
   if (usuario.balance < amount) {
     throw errorObj(400, 'Você não tem saldo suficiente');
   }
-  const user = await usersModel.witdrawUserBalance(userId, amount);
-  return user;
+  await usersModel.witdrawUserBalance(userId, amount);
 };
 
 const depositUserBalance = async (payload) => {
