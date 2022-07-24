@@ -60,6 +60,9 @@ const userBuyStock = async (payload) => {
   if (user.balance < (stock.value * quantity)) {
     throw errorObj(400, 'Você não tem saldo suficiente');
   }
+  if (!stock) {
+    throw errorObj(404, 'Ação não encontrada');
+  }
   if (stock.quantity < quantity) {
     throw errorObj(400, 'Não existem ações suficientes');
   }
