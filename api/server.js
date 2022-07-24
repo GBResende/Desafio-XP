@@ -18,6 +18,7 @@ app.use('/docs', swagger.serve, swagger.setup(require('../swagger')));
 
 app.use(errorMiddleware);
 
+
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
