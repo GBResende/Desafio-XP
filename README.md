@@ -36,7 +36,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [ ] Testar a aplicação
 - [ ] Realizar o deploy da aplicação
 
-## Aprendizados
+## Dificuldades e Aprendizados
 
 #### Soft Skills
 - Esse projeto está sendo realizado em paralelo com o curso de formação em desenvolvimento web, acho que um dos principais aprendizados que eu tive foi o fato de elaborar uma gestão de tempo eficiente, para conseguir realizar tudo com excelência.
@@ -47,6 +47,9 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - Precisei de buscar uma solução para popular o banco de dados sempre que alguém clonasse o repositório e inicializasse o projeto, automaticamente.
 - Criar o banco de dados do zero, abstraindo os relacionamentos de cada tabela, quais dados incluir em cada tabela não foi uma tarefa fácil, porém extremamente agregadora, sinto que isso trouxe uma confiança indispensável para a criação de futuras arquiteturas.
 - Dockerizar a aplicação não é algo que tenho tanta maestria, pude desenvolver essa habilidade durante essa aplicação.
+- Quando se trata de Dockerizar a aplicação é muito difícil a abstração se você não tem muito conhecimento sobre ambientes separados, tive que buscar conhecimento em diversos lugares para conseguir o entendimento necessário sobre ambientes, portas etc, agora esse entendimento se encaixou muito bem na minha perspectiva.
+- Na confecção da documentação SWAGGER foi um grande alvorosso, não conseguia colocar o exemplo de retorno de uma requisição, tentei de diversas formas e não obtive sucesso, até o momento sigo buscando informações pra conseguir o perfeito funcionamento da aplicação.
+
 
 
 ## 💻 Pré-requisitos
