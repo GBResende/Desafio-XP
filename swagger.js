@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   openapi: '3.0.0',
   info: {
@@ -10,11 +12,11 @@ module.exports = {
   },
   servers: [
     {
-      url: 'http://localhost:3000/docs',
+      url: `http://localhost:${process.env.PORT}`,
       description: 'API TESTE',
     },
     {
-      url: 'https://passaportexp.herokuapp.com/docs',
+      url: 'https://passaportexp.herokuapp.com',
       description: 'API PRODUÇÃO',
     },
   ],
