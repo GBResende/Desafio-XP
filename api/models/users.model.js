@@ -8,6 +8,14 @@ const getUserById = async (id) => {
   return user;
 };
 
+const getUserAccount = async (userId) => {
+  const [[userAccount]] = await connection.execute(
+    'SELECT id, name, email, balance, createdAt FROM stocks_xp.users WHERE id = ?',
+    [userId],
+  );
+  return userAccount;
+};
+
 const getUserByCredentials = async (email, password) => {
   const [[user]] = await connection.query(
     'SELECT id, username, email, balance FROM stocks_xp.users WHERE email = ? AND password = ? ',
