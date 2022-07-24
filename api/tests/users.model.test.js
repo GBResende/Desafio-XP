@@ -75,3 +75,15 @@ describe('Testa a camada model', () => {
       expect(connection.execute.calledOnce).to.be.true;
     });
   });
+  describe('testa o método depositUserBalance', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves();
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('o método connection.execute deve ser chamado 1 vez', async () => {
+      await usersModel.depositUserBalance(1, 100);
+      expect(connection.execute.calledOnce).to.be.true;
+    });
+  });
