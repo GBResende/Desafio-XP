@@ -63,3 +63,15 @@ describe('Testa a camada model', () => {
       expect(connection.execute.calledOnce).to.be.true;
     });
   });
+  describe('testa o método witdrawUserBalance', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves();
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('o método connection.execute deve ser chamado 1 vez', async () => {
+      await usersModel.witdrawUserBalance(1, 100);
+      expect(connection.execute.calledOnce).to.be.true;
+    });
+  });
