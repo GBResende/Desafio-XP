@@ -51,3 +51,15 @@ describe('Testa a camada model', () => {
       expect(userCredentials).to.be.equal(usersMock.userByCredentials);
     });
   });
+  describe('testa o método postUser', () => {
+    beforeEach(async () => {
+      sinon.stub(connection, 'execute').resolves();
+    });
+    afterEach(async () => {
+      connection.execute.restore();
+    });
+    it('o método connection.execute deve ser chamado 1 vez', async () => {
+      await usersModel.postUser('teste', 'teste@teste.com', '12345678');
+      expect(connection.execute.calledOnce).to.be.true;
+    });
+  });
