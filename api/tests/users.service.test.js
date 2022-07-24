@@ -309,3 +309,184 @@ describe('testa a camada de users Service', () => {
       stocksModel.decreaseStock.restore();
     });
   });
+  describe('testa a função userSellStock', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'decreaseUserStock').resolves();
+      sinon.stub(usersModel, 'userSellStock').resolves();
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+      sinon.stub(stocksModel, 'increaseStock').resolves();
+      sinon.stub(walletModel, 'deleteUserStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.decreaseUserStock.restore();
+      usersModel.userSellStock.restore();
+      usersModel.depositUserBalance.restore();
+      stocksModel.increaseStock.restore();
+      walletModel.deleteUserStock.restore();
+    });
+    it('Todas as funções devem ser chamadas sem lançamento de erros e não deve deletar a ação na carteira do usuário', async () => {
+      await userService.userSellStock({userId: 1, stockId: 1, quantity: 2});
+      expect(walletModel.getUserStockById.calledOnce).to.be.true
+      expect(usersModel.getUserById.calledOnce).to.be.true
+      expect(stocksModel.getStockById.calledOnce).to.be.true
+      expect(walletModel.decreaseUserStock.calledOnce).to.be.true
+      expect(walletModel.deleteUserStock.calledOnce).to.be.false
+      expect(usersModel.userSellStock.calledOnce).to.be.true
+      expect(usersModel.depositUserBalance.calledOnce).to.be.true
+      expect(stocksModel.increaseStock.calledOnce).to.be.true
+    });
+  });
+  describe('testa a função userSellStock quando o usuário tenta vender mais ações do que ele possui', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'decreaseUserStock').resolves();
+      sinon.stub(usersModel, 'userSellStock').resolves();
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+      sinon.stub(stocksModel, 'increaseStock').resolves();
+      sinon.stub(walletModel, 'deleteUserStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.decreaseUserStock.restore();
+      usersModel.userSellStock.restore();
+      usersModel.depositUserBalance.restore();
+      stocksModel.increaseStock.restore();
+      walletModel.deleteUserStock.restore();
+    });
+    it('deve retornar um erro "400" com a mensagem "Você só pode vender quantidade menor ou igual a sua"', async () => {
+      try {
+        await userService.userSellStock({userId: 1, stockId: 1, quantity: 50});
+
+      } catch (err) {
+        expect(err.status).to.be.equal(400);
+        expect(err.message).to.be.equal('Você só pode vender quantidade menor ou igual a sua');
+      }
+    });
+  });
+  describe('testa a função userSellStock quando o usuário vende todas as ações que ele possui', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'decreaseUserStock').resolves();
+      sinon.stub(usersModel, 'userSellStock').resolves();
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+      sinon.stub(stocksModel, 'increaseStock').resolves();
+      sinon.stub(walletModel, 'deleteUserStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.decreaseUserStock.restore();
+      usersModel.userSellStock.restore();
+      usersModel.depositUserBalance.restore();
+      stocksModel.increaseStock.restore();
+      walletModel.deleteUserStock.restore();
+    });
+    it('Deve deletar a ação da carteira do usuário', async () => {
+      await userService.userSellStock({userId: 1, stockId: 1, quantity: 5});
+      expect(walletModel.deleteUserStock.calledOnce).to.be.true
+    });
+  });
+  describe('testa a função userSellStock quando o usuário não existe', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves(walletMock.walletByStockId);
+      sinon.stub(usersModel, 'getUserById').resolves();
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'decreaseUserStock').resolves();
+      sinon.stub(usersModel, 'userSellStock').resolves();
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+      sinon.stub(stocksModel, 'increaseStock').resolves();
+      sinon.stub(walletModel, 'deleteUserStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.decreaseUserStock.restore();
+      usersModel.userSellStock.restore();
+      usersModel.depositUserBalance.restore();
+      stocksModel.increaseStock.restore();
+      walletModel.deleteUserStock.restore();
+    });
+    it('deve retornar um erro "404" com a mensagem "Usuário não encontrado"', async () => {
+      try {
+        await userService.userSellStock({userId: 1, stockId: 1, quantity: 50});
+
+      } catch (err) {
+        expect(err.status).to.be.equal(404);
+        expect(err.message).to.be.equal('Usuário não encontrado');
+      }
+    });
+  });
+  describe('testa a função userSellStock quando o usuário não possui a ação', () => {
+    beforeEach(async () => {
+      sinon.stub(walletModel, 'getUserStockById').resolves();
+      sinon.stub(usersModel, 'getUserById').resolves({
+        id: 1,
+        name: 'teste',
+        email: 'teste@teste.com',
+        password: '12345678',
+        balance: 10000,
+        createdAt: '2022-07-22 16:13:00',
+      });
+      sinon.stub(stocksModel, 'getStockById').resolves(stocksMock.stockById);
+      sinon.stub(walletModel, 'decreaseUserStock').resolves();
+      sinon.stub(usersModel, 'userSellStock').resolves();
+      sinon.stub(usersModel, 'depositUserBalance').resolves();
+      sinon.stub(stocksModel, 'increaseStock').resolves();
+      sinon.stub(walletModel, 'deleteUserStock').resolves();
+    });
+    afterEach(async () => {
+      walletModel.getUserStockById.restore();
+      usersModel.getUserById.restore();
+      stocksModel.getStockById.restore();
+      walletModel.decreaseUserStock.restore();
+      usersModel.userSellStock.restore();
+      usersModel.depositUserBalance.restore();
+      stocksModel.increaseStock.restore();
+      walletModel.deleteUserStock.restore();
+    });
+    it('deve retornar um erro "400" com a mensagem "você não possui essa ação"', async () => {
+      try {
+        await userService.userSellStock({userId: 1, stockId: 1, quantity: 50});
+
+      } catch (err) {
+        expect(err.status).to.be.equal(400);
+        expect(err.message).to.be.equal('Você não possui essa ação');
+      }
+    });
+  });
+})
