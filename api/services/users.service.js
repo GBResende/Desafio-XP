@@ -45,6 +45,10 @@ const witdrawUserBalance = async (payload) => {
 
 const depositUserBalance = async (payload) => {
   const { userId, amount } = payload;
+  const user = await usersModel.getUserById(userId);
+  if (!user) {
+    throw errorObj(404, 'Usuário não encontrado');
+  }
   await usersModel.depositUserBalance(userId, amount);
 };
 
