@@ -58,7 +58,7 @@ Esta API tem como objetivo simular transações de compra e venda de ações, su
 - Na confecção dos testes unitários utilizei Mocha, Chai e Sinnon que na minha opinião desempenham muito bem e cumprem o papel que foram escalados a fazer.
 - utilizei a dockerização por containers para facilitar o deploy e a instalação do projeto em outras máquinas e sistemas.
 - Na estrutura da API Rest optei pela utilização da arquitetura MSC.
-- Neste projeto eu não optei pela utilização de ORM's, a camada de models realiza a conexão com o banco e executa todas as querys utilizando SQL (mas pretendo realizar melhorias futuras neste projeto e então implementarei uma ORM para facilitar a manutenciabilidade do código).
+- Neste projeto eu não optei pela utilização de ORM's, a camada de models realiza a conexão com o banco e executa todas as querys utilizando SQL (mas pretendo realizar melhorias futuras neste projeto e então implementarei uma ORM para facilitar a manutenibilidade do código).
 - Para validação e autenticação das requisições eu utilizei a criptografia JWT.
 - Para criação das rotas eu utilizei o framework Express e para recuperar erros no middleware de erros fiz a utilização da biblioteca do Express-async-errors
 - Para documentar o funcionamento da API eu fiz a utilização do SWAGGER, que facilita a utilização e reaproveitamento das rotas no Front End.
@@ -133,7 +133,7 @@ npm run test:coverage
 #### Soft Skills
 - Gestão de tempo - Esse projeto está sendo realizado em paralelo com o curso de formação em desenvolvimento web, acho que um dos principais aprendizados que eu tive foi o fato de elaborar uma gestão de tempo eficiente, para conseguir realizar tudo com excelência.
 - Autoliderança - Neste projeto tive a oportunidade de reconhecer diversas falhas e possíveis correções que poderei levar pra vida inteira.
-- Foco - Foi um projeto extremamente desafiador, precisei dizer "não" pra diversar coisas 
+- Foco - Foi um projeto extremamente desafiador, precisei dizer "não" pra diversas coisas.
 
 #### Hard Skills
 
